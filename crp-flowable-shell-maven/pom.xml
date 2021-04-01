@@ -30,5 +30,48 @@
             <artifactId>h2</artifactId>
             <version>1.4.200</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.martin-grofcik.crp-flowable-ex</groupId>
+            <artifactId>crp-flowable-shell</artifactId>
+            <version>0.0.3</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>downloadModels</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-jar</argument>
+                                <argument>${settings.localRepository}/org/crp/flowable/ex/crp-flowable-shell/0.0.2-SNAPSHOT/crp-flowable-shell-0.0.2-SNAPSHOT.jar</argument>
+                                <argument>configure admin test http://localhost:8888/flowable-ui;</argument>
+                                <argument>export-bar --name sampleApp --output-file-name ${project.build.sourceDirectory}/../resources/apps/sampleApp.zip;</argument>
+                                <argument>exit</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </distributionManagement>
 </project>
